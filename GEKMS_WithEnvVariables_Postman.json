@@ -1,0 +1,2559 @@
+{
+	"info": {
+		"_postman_id": "a69547c2-6e54-4561-9c48-6e2d277a3b29",
+		"name": "GEKMS_WEnvVariables",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Req - Wrap",
+			"item": [
+				{
+					"name": "Wrap - valid JWT + valid Req() data| TC-36885",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4379968a-5849-4c82-8cf6-28e985df304d",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "337d6629-fea1-40aa-bfc1-e46abf027a1a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.be.status(200);",
+									"});",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"wrapped_blob\", jsonData.wrapped_blob);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - missing \"keytag\" in URL | TC-36849",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a1c3e23-351e-400f-9a0c-c879c1b8724c",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.be.status(404);",
+									"});",
+									"pm.test(\"Response should contain 'Not Found'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Not Found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}:wrap",
+							"host": [
+								"{{url}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - Invalid \"keytag\" in URL | TC-36853",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b49be0ee-a5de-462a-844d-e5fbdd9516f2",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.be.status(404);",
+									"});",
+									"pm.test(\"Response should contain 'requested external key ID is not valid'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"requested external key ID is not valid\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{InvalidKeyId}}:wrap",
+							"host": [
+								"{{url}}{{InvalidKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - KeyID =' abcd' | TC-38655",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "63afffb6-950a-480f-ac4e-d95fbf01c6bf",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.be.status(404);",
+									"});",
+									"pm.test(\"Response should contain 'requested external key ID is not valid'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"requested external key ID is not valid\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}abcd:wrap",
+							"host": [
+								"{{url}}abcd"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - invalid 'JWT' | TC-36876",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "998b3218-5147-4c09-a79a-357ec2c63ae0",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{InvalidJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - expired 'JWT' | TC-36887",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "85efbce7-d89a-42d6-8bef-f4e2175999f5",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ExpiredJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKey}}:wrap",
+							"host": [
+								"{{url}}{{IonicKey}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - missing 'JWT' | TC-36888",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8c5bc351-9ad7-4e72-8c47-f0376c375f07",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - JWT with missing issuer | TC-36890",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f80fbb74-2ec6-449e-9a3d-5249882c6ff6",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWTMissingIssuer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - JWT with invalid issuer | TC-36891",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "707d907b-9088-4d11-a183-e1efffcc66af",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWTInvalidIssuer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - priv key != pub key| TC-36911",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8a0c8dbd-d62e-4ca4-b158-7cc87daa1e1b",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWTDifferentPrivKey}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - JWT with missing aud| TC-36892",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3fe02703-1d02-4b95-ba97-9eb14f1aa562",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWTMissingAud}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - JWT with invalid aud| TC-36893",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b79b55c9-1c79-4cbe-87ab-0926f5322274",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWTInvalidAud}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - JWT with missing sub| TC-36894",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c6ada8f4-6890-4d00-a0ea-3a5f687bd095",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWTMissingSub}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - JWT with invalid sub| TC-36908",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ca3043e8-518a-4eab-b359-0639f16ff2af",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWTInvalidSub}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - JWT with invalid email| TC-36909",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b4b3352f-d990-48df-b282-c4b8814458c9",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWTInvalidEmail}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - JWT with missing email| TC-368910",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0ecb5043-9b3d-4e00-b1e1-1ca856441b39",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWTMissingEmail}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - empty AAD field | TC-36912",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "55c3c0c0-ee1f-4ed2-bb2a-0dad23f2082f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.be.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap -  AAD text >12 | TC - 36940",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0e17e83c-3f34-4d72-8861-0441fcbd32f4",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.be.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD>12}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - AAD text <12 chars | TC-36941",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "85001533-aaca-48ec-bf57-f387e393db6d",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.be.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD<12}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "/v0/{key_path}:wrap"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - NBF Pass nowtime() +4 mins | TC-36961",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f5faa82d-7ee4-4b26-9904-6b4074b27a63",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - NBF Fail nowtime() +6 mins | TC-36962",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "62933e58-ed97-41e6-b3ef-f6a3f0a0d428",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "key",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap",
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - AccessReason/Justification check",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImY2ZjgwZjM3ZjIxYzIzZTYxZjJiZTQyMzFlMjdkMjY5ZDY2OTUzMjkifQ.eyJleHAiOjE1NzIzNDA0ODUuMjk1ODQ0MywibmJmIjoxNTcxMzE1Mjg1LCJpYXQiOjE1NzEzMTUyODUsImlzcyI6Imlzc3VlcjEiLCJhdWQiOlsiYXVkaWVuY2UxIl0sInN1YiI6ImltYVN1YmplY3QiLCJlbWFpbCI6ImdzYTFAZ2NwIn0.LE8V2tUMSsuCX-JA_PFc9E48_T362Y4naq-IIc3gmRTj4qFKqCUmWvKGLNeN_GSiJvn37MBEm-sNP5BpfwZCzj2NskExfuzpPZOK4mexPoRn8EE1qgmi45bZAbiABhbWELJm8s6ukSg4nmrdcJRYtYj_VHYyAVB8DecDZG2VYR-jj92K2AMNTua3mDP6GHwRa2TAFphboCevtN7UBzzRKZ8cugQShoWmD9LSvSTXtUP24AkGWXf6uesC939IoJadeYoMiWo-b6wE3nO1Z0t0WhKzZ4q_dFS26SWdc593DEH9wlNiN1Q1l4XYohtPmKD4QC0fWFf7lEZRnbbcEmWBHw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "key",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"IonicTenantKeyId\",\n  \"plaintext\": \"ThisIsPlainTextForUnwrap\",\n  \"additional_context\": {\n    \"full_resource_name\": \"Resource name for GeKMS Testing\",\n    \"access_reason_context\":{\n    \t\"reason\":0\n    }\n  },\n  \"additional_authenticated_data\": \"MTIzNDU2Nzg5MDEy\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:443/v0/E1QTIH_h-eg:wrap?",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "443",
+							"path": [
+								"v0",
+								"E1QTIH_h-eg:wrap"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - Deny access-reason=0: \"REASON_UNSPECIFIED\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "878f9c67-d637-4dcc-baae-a173e6615be7",
+								"exec": [
+									"pm.test(\"Status code is 403 Forbidden\", function () {",
+									"    pm.response.to.be.status(403);",
+									"});",
+									"pm.test(\"Response should contain 'The operation was denied'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"The operation was denied\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\",\n    \"access_reason_context\":{ \n    \t\"reason\":0 \n    }\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap"
+						},
+						"description": "TC-37304"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - Deny access-reason=1: \"CUSTOMER_INITIATED_SUPPORT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd6a05da-2913-46cf-80d8-a80400345b8c",
+								"exec": [
+									"pm.test(\"Status code is 403 Forbidden\", function () {",
+									"    pm.response.to.be.status(403);",
+									"});",
+									"pm.test(\"Response should contain 'The operation was denied'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"The operation was denied\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\",\n    \"access_reason_context\":{ \n    \t\"reason\":1 \n    }\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap"
+						},
+						"description": "TC-37305"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - Deny access-reason=2: \"GOOGLE_INITIATED_SERVICE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd6a05da-2913-46cf-80d8-a80400345b8c",
+								"exec": [
+									"pm.test(\"Status code is 403 Forbidden\", function () {",
+									"    pm.response.to.be.status(403);",
+									"});",
+									"pm.test(\"Response should contain 'The operation was denied'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"The operation was denied\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\",\n    \"access_reason_context\":{ \n    \t\"reason\":2 \n    }\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap"
+						},
+						"description": "TC-37306"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - Deny access-reason=3: \"THIRD_PARTY_DATA_REQUEST",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd6a05da-2913-46cf-80d8-a80400345b8c",
+								"exec": [
+									"pm.test(\"Status code is 403 Forbidden\", function () {",
+									"    pm.response.to.be.status(403);",
+									"});",
+									"pm.test(\"Response should contain 'The operation was denied'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"The operation was denied\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\",\n    \"access_reason_context\":{ \n    \t\"reason\":3\n    }\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap"
+						},
+						"description": "TC-37307"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - Deny access-reason=4: \"GOOGLE_INITIATED_REVIEW",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd6a05da-2913-46cf-80d8-a80400345b8c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.be.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\",\n    \"access_reason_context\":{ \n    \t\"reason\":4\n    }\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap"
+						},
+						"description": "TC-37305"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - Allow access-reason=5: \"CUSTOMER_INITIATED_ACCESS",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd6a05da-2913-46cf-80d8-a80400345b8c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.be.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\",\n    \"access_reason_context\":{ \n    \t\"reason\":5\n    }\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap"
+						},
+						"description": "TC-37305"
+					},
+					"response": []
+				},
+				{
+					"name": "Wrap - Allow access-reason=6: \"GOOGLE_INITIATED_SYSTEM_OPERATION",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd6a05da-2913-46cf-80d8-a80400345b8c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.be.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"plaintext\": \"{{plaintext}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\",\n    \"access_reason_context\":{ \n    \t\"reason\":5\n    }\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:wrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "wrap"
+						},
+						"description": "TC-37305"
+					},
+					"response": []
+				}
+			],
+			"description": "/v0/{key_path}:wrap",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Req - Unwrap",
+			"item": [
+				{
+					"name": "Unwrap - Valid data response | TC-36898",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0e4bb9b3-4f40-4d08-8298-704e51d2e2c8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "47ad87b4-17c4-4d92-aeac-ccc57d36d56b",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.be.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"{{wrapped_blob}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:unwrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap - Valid data response AccessReason/Justification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e6abf145-0598-45c4-b534-eef3b809fe8c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.be.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"{{wrapped_blob}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\",\n     \"access_reason_context\":{\n    \t\"reason\":6\n    }\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:unwrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap - Missing wrapped_blob | TC-36896",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e5d6ea90-c407-48ad-9e2f-7132614bc9c9",
+								"exec": [
+									"pm.test(\"Status code is 400 Bad Request\", function () {",
+									"    pm.response.to.be.status(400);",
+									"});",
+									"pm.test(\"Response should contain 'wrapped key format is invalid'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"wrapped key format is invalid\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:unwrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap - Invalid wrapped_blob | TC-36897",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a82427bb-af7e-47d8-848b-664972ff8ad1",
+								"exec": [
+									"pm.test(\"Status code is 400 Bad Request\", function () {",
+									"    pm.response.to.be.status(400);",
+									"});",
+									"pm.test(\"Response should contain 'The ciphertext is invalid'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"The ciphertext is invalid\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"TTBjazAwMDAwMDB8YzdnT05sRVdjelozVlBOQ3xKVl9nSklTdDBUUjBCOTFkeEtILUFLY0Nrdkd0YzQtay1vdmdRalhUclFRQ3OP\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:unwrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap - expired JWT | TC-36899",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a82427bb-af7e-47d8-848b-664972ff8ad1",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWTExpired}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"{{wrapped_blob}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:unwrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap - missing JWT | TC-36900",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "718fbbe8-765a-43eb-b012-a18062aefad1",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"{{wrapped_blob}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:unwrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap - invalid JWT | TC-36901",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e80739e5-3e38-4f46-8090-f9e2d7426ec7",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.be.status(401);",
+									"});",
+									"pm.test(\"Response should contain 'request could not be authenticated'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"request could not be authenticated\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "dhfkhffafadads",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"{{wrapped_blob}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:unwrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap - missing Keytag/KeyID | TC-36965",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9f458363-aed1-4df9-a125-7f7cf069ea95",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.be.status(404);",
+									"});",
+									"pm.test(\"Response should contain 'Not Found'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Not Found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"{{wrapped_blob}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}:unwrap",
+							"host": [
+								"{{url}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap - invalid Keytag/KeyID | TC-36902",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c3b669ae-dfff-47da-8edd-8573bd70fb4b",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.be.status(404);",
+									"});",
+									"pm.test(\"Response should contain 'requested external key ID is not valid'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"requested external key ID is not valid\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"{{wrapped_blob}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}{{InvalidKeyId}}:unwrap",
+							"host": [
+								"{{url}}{{InvalidKeyId}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap - wrap AAD value != unwrap AAD | TC-36939",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "caafe755-976b-4ff8-8f2f-437e4074116d",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.be.status(400);",
+									"});",
+									"pm.test(\"Response should contain 'Ciphertext failed authentication'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Ciphertext failed authentication\");",
+									"});",
+									"",
+									"pm.test(\"Response should contain 'type.googleapis.com/google.rpc.BadRequest'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"type.googleapis.com/google.rpc.BadRequest\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"{{wrapped_blob}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_InValid}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:unwrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap - No AAD / empty AAD | TC-36902",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e568ee74-06b1-4dab-9135-67dd3afc5429",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.be.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"{{wrapped_blob_emptyAAD}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"\"\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:unwrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap -  AAD > 12 chars | TC-36903",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ac5980df-7902-446f-876f-b20878656f27",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.be.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"{{wrapped_blob}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD>12}}\"\n\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:unwrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap -  AAD < 12 chars | TC-36904",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ac5980df-7902-446f-876f-b20878656f27",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.be.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"{{wrapped_blob}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD<12}}\"\n\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId}}:unwrap",
+							"host": [
+								"{{url}}{{IonicKeyId}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unwrap - another valid ID | TC-36967",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0e4bb9b3-4f40-4d08-8298-704e51d2e2c8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e7c839b5-174f-45c1-a357-a0179926655d",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.be.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"key_path\": \"{{key_path}}\",\n  \"wrapped_blob\": \"{{wrapped_blob}}\",\n  \"additional_context\": {\n    \"full_resource_name\": \"{{resourcename}}\"\n  },\n  \"additional_authenticated_data\": \"{{AAD_Valid}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}{{IonicKeyId2}}:unwrap",
+							"host": [
+								"{{url}}{{IonicKeyId2}}"
+							],
+							"port": "unwrap"
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
